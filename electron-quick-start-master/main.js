@@ -7,13 +7,19 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    show: false, //No carga la pantalla hasta que se carguen los estilos
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
 
+  
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  //Cuando está todo cargado, lo muestra
+  mainWindow.on('ready-to-show', ()=>{
+    mainWindow.show()
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

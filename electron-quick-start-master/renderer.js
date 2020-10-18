@@ -9,3 +9,4 @@ setInterval(()=>{
 
     document.getElementById("numero").innerHTML = number
 }, 2000)
+
