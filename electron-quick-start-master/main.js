@@ -26,7 +26,25 @@ function createWindow () {
     mainWindow.show()
   })
 
-  mainWindow.on('enter-full-screen',()=>{
+  mainWindow.webContents.on('new-window',(e,url)=>{
+    console.log(url)
+    e.preventDefault()
+    let modalWindow = new BrowserWindow({
+      width: 600,
+      height:400,
+      parent: mainWindow,
+      modal: true
+    })
+    modalWindow.loadURL(url)
+  })
+
+  mainWindow.webContents.on('context-menu',(e,args)=>{
+    console.log(args)
+  })
+
+}
+
+  /* mainWindow.on('enter-full-screen',()=>{
     setTimeout(()=>{
       mainWindow.setFullScreen(false)
     },1000)
@@ -39,7 +57,7 @@ function createWindow () {
     },1000)
   })
 
-  mainWindow.setFullScreen(true)
+  mainWindow.setFullScreen(true) */
   
   /* secondWindow = new BrowserWindow({
     width: 500,
@@ -53,7 +71,8 @@ function createWindow () {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
-}
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
