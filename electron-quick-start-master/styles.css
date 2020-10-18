@@ -1,5 +1,7 @@
 body{
     background-color: black;
+    -webkit-app-region: drag;
+    -web-user-select: none;
 }
 p{
     color: white;

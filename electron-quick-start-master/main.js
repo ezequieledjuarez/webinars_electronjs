@@ -7,7 +7,8 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    show: false, //No carga la pantalla hasta que se carguen los estilos
+    show: false,  //No carga la pantalla hasta que se carguen los estilos
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -20,6 +21,17 @@ function createWindow () {
   mainWindow.on('ready-to-show', ()=>{
     mainWindow.show()
   })
+
+  
+  /* secondWindow = new BrowserWindow({
+    width: 500,
+    height: 400,
+    parent: mainWindow, //la ventana main es padre
+    modal: true
+  })
+  
+
+  secondWindow.loadURL(`file://${__dirname}/index2.html`) */
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
