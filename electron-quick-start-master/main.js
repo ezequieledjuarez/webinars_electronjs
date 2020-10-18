@@ -7,6 +7,10 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    minHeight: 300,
+    minWidth:500,
+    maxWidth:1000,
+    maxHeight:800,
     show: false,  //No carga la pantalla hasta que se carguen los estilos
     frame: false,
     webPreferences: {
@@ -22,6 +26,20 @@ function createWindow () {
     mainWindow.show()
   })
 
+  mainWindow.on('enter-full-screen',()=>{
+    setTimeout(()=>{
+      mainWindow.setFullScreen(false)
+    },1000)
+  })
+  
+  
+  mainWindow.on('leave-full-screen',()=>{
+    setTimeout(()=>{
+      mainWindow.setFullScreen(true)
+    },1000)
+  })
+
+  mainWindow.setFullScreen(true)
   
   /* secondWindow = new BrowserWindow({
     width: 500,
