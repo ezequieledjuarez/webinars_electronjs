@@ -1,9 +1,14 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, session} = require('electron')
 const path = require('path')
 
 function createWindow () {
   // Create the browser window.
+  // Las sesiones por fromPartition no son persistentes
+  // let sesMain = session.fromPartition('mainWindow')
+  // Para volverlas persistentes
+  // let sesMain = session.fromPartition('persist : mainWindow')
+
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -14,7 +19,8 @@ function createWindow () {
     show: false,  //No carga la pantalla hasta que se carguen los estilos
     frame: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      session: sesMain
     }
   })
 
@@ -26,7 +32,24 @@ function createWindow () {
     mainWindow.show()
   })
 
-  mainWindow.webContents.on('new-window',(e,url)=>{
+  secondWindow = new BrowserWindow({
+    width: 500,
+    height: 400,
+    //parent: mainWindow, //la ventana main es padre
+    //modal: true
+  })
+  
+  secondWindow.loadURL(`file://${__dirname}/index2.html`) 
+
+  // Open the DevTools.
+   mainWindow.webContents.openDevTools()
+   secondWindow.webContents.openDevTools()
+
+
+}
+  
+
+/* mainWindow.webContents.on('new-window',(e,url)=>{
     console.log(url)
     e.preventDefault()
     let modalWindow = new BrowserWindow({
@@ -42,7 +65,7 @@ function createWindow () {
     console.log(args)
   })
 
-}
+} */
 
   /* mainWindow.on('enter-full-screen',()=>{
     setTimeout(()=>{
@@ -56,22 +79,9 @@ function createWindow () {
       mainWindow.setFullScreen(true)
     },1000)
   })
-
   mainWindow.setFullScreen(true) */
   
-  /* secondWindow = new BrowserWindow({
-    width: 500,
-    height: 400,
-    parent: mainWindow, //la ventana main es padre
-    modal: true
-  })
-  
-
-  secondWindow.loadURL(`file://${__dirname}/index2.html`) */
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
+ 
 
 
 // This method will be called when Electron has finished
