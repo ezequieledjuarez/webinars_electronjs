@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, session} = require('electron')
+const {app, BrowserWindow, session, dialog} = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -20,7 +20,7 @@ function createWindow () {
     frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      session: sesMain
+      //session: sesMain
     }
   })
 
@@ -31,23 +31,24 @@ function createWindow () {
   mainWindow.on('ready-to-show', ()=>{
     mainWindow.show()
   })
+/* 
+  let file = dialog.showOpenDialog(mainWindow, {}, (file)=>{
+    console.log(file)
+})
+  console.log('Hola') */
 
-  secondWindow = new BrowserWindow({
+ /*  secondWindow = new BrowserWindow({
     width: 500,
     height: 400,
-    //parent: mainWindow, //la ventana main es padre
-    //modal: true
+    parent: mainWindow, //la ventana main es padre
+    modal: true
   })
   
-  secondWindow.loadURL(`file://${__dirname}/index2.html`) 
+  secondWindow.loadURL(`file://${__dirname}/index2.html`)  */
 
   // Open the DevTools.
-   mainWindow.webContents.openDevTools()
-   secondWindow.webContents.openDevTools()
-
-
-}
-  
+   //mainWindow.webContents.openDevTools()
+   //secondWindow.webContents.openDevTools()
 
 /* mainWindow.webContents.on('new-window',(e,url)=>{
     console.log(url)
@@ -80,9 +81,8 @@ function createWindow () {
     },1000)
   })
   mainWindow.setFullScreen(true) */
+}
   
- 
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
