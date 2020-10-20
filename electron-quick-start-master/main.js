@@ -1,6 +1,33 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, session, dialog} = require('electron')
+const {app, BrowserWindow, session, dialog, Menu, MenuItem, Tray} = require('electron')
 const path = require('path')
+
+let menuTemplate  =[
+  {
+    label: "menu1",
+    click() {console.log('menu1')},
+    submenu: [ 
+      {
+        label: "menu11",
+        accelerator: "CommandOrControl+T",
+        click() {console.log('menu11')}
+      }
+    ]
+  },
+  {
+    label: "menu2",
+      submenu: [
+      {
+        label: "quit",
+        role: "quit"
+      }
+    ]
+  }
+]
+
+let menu = Menu.buildFromTemplate(menuTemplate)
+
+let tray = null
 
 function createWindow () {
   // Create the browser window.
@@ -24,13 +51,30 @@ function createWindow () {
     }
   })
 
-  
+  Menu.setApplicationMenu(menu)
+
+  mainWindow.webContents.on('context-menu',(e,args)=>{
+    menu.popup(mainWindow)
+  })
+
+  tray = new Tray('pip.jpg')
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Item1'},
+    {label: 'Item2'},
+    {label: 'Item1', checked: true},
+    {label: 'Item4'}
+  ])
+
+  tray.setToolTip('Mi aplicacion')
+  tray.setContextMenu(contextMenu)
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
   //Cuando está todo cargado, lo muestra
   mainWindow.on('ready-to-show', ()=>{
     mainWindow.show()
   })
+
+  
 /* 
   let file = dialog.showOpenDialog(mainWindow, {}, (file)=>{
     console.log(file)
@@ -50,7 +94,7 @@ function createWindow () {
    //mainWindow.webContents.openDevTools()
    //secondWindow.webContents.openDevTools()
 
-/* mainWindow.webContents.on('new-window',(e,url)=>{
+  /* mainWindow.webContents.on('new-window',(e,url)=>{
     console.log(url)
     e.preventDefault()
     let modalWindow = new BrowserWindow({
@@ -66,7 +110,7 @@ function createWindow () {
     console.log(args)
   })
 
-} */
+  } */
 
   /* mainWindow.on('enter-full-screen',()=>{
     setTimeout(()=>{
